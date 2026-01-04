@@ -2,17 +2,33 @@ const express = require("express");
 const app = express();
 const snapsave = require("./snapsave-downloader/src/index");
 const port = 3000;
+const path = require("path");
+
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Add CORS headers for API requests
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
 
 console.log("=".repeat(50));
 console.log("Instagram Video Downloader API");
 console.log("=".repeat(50));
 
-app.get("/", (req, res) => {
-  console.log("GET / - Root endpoint accessed");
+app.get("/api", (req, res) => {
+  console.log("GET /api - API info endpoint accessed");
   res.json({
     message: "Instagram Video Downloader API is running!",
+    version: "2.0.0",
     endpoints: {
-      download: "/igdl?url=<instagram_url>"
+      web: "/",
+      download: "/igdl?url=<instagram_url>",
+      api_info: "/api"
     }
   });
 });

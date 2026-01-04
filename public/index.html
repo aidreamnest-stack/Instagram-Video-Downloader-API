@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Download Instagram videos, reels, and stories instantly. Fast, free, and easy-to-use Instagram media downloader.">
+    <meta name="keywords" content="instagram downloader, instagram video downloader, download instagram reels, instagram stories downloader">
+    <title>InstaGrab - Instagram Video Downloader</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="background-gradient"></div>
+    
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="12" fill="url(#gradient1)"/>
+                    <path d="M20 14C16.69 14 14 16.69 14 20C14 23.31 16.69 26 20 26C23.31 26 26 23.31 26 20C26 16.69 23.31 14 20 14ZM20 24C17.79 24 16 22.21 16 20C16 17.79 17.79 16 20 16C22.21 16 24 17.79 24 20C24 22.21 22.21 24 20 24Z" fill="white"/>
+                    <path d="M26 12H14C12.9 12 12 12.9 12 14V26C12 27.1 12.9 28 14 28H26C27.1 28 28 27.1 28 26V14C28 12.9 27.1 12 26 12ZM26 26H14V14H26V26Z" fill="white"/>
+                    <circle cx="26.5" cy="13.5" r="1.5" fill="white"/>
+                    <defs>
+                        <linearGradient id="gradient1" x1="0" y1="0" x2="40" y2="40">
+                            <stop offset="0%" style="stop-color:#833AB4"/>
+                            <stop offset="50%" style="stop-color:#FD1D1D"/>
+                            <stop offset="100%" style="stop-color:#FCB045"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <span class="logo-text">InstaGrab</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="hero">
+                <h1 class="hero-title">
+                    Download Instagram Videos
+                    <span class="gradient-text">Instantly</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Fast, free, and easy-to-use Instagram video downloader. 
+                    Download videos, reels, and stories in high quality.
+                </p>
+            </section>
+
+            <section class="download-section">
+                <div class="card">
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.5 2C13.5 2 15 3.5 15 6C15 8.5 13.5 10 13.5 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <path d="M17.5 4C17.5 4 19 6 19 9C19 12 17.5 14 17.5 14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            <rect x="2" y="10" width="10" height="12" rx="2" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        <input 
+                            type="url" 
+                            id="urlInput" 
+                            class="url-input" 
+                            placeholder="Paste Instagram URL here..."
+                            autocomplete="off"
+                            spellcheck="false"
+                        >
+                        <button id="clearBtn" class="clear-btn" aria-label="Clear input">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <button id="downloadBtn" class="download-btn">
+                        <svg class="btn-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 3V16M12 16L16 12M12 16L8 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M3 16V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                        <span class="btn-text">Download</span>
+                    </button>
+
+                    <div id="loadingState" class="loading-state hidden">
+                        <div class="spinner"></div>
+                        <p class="loading-text">Processing your request...</p>
+                    </div>
+
+                    <div id="errorState" class="error-state hidden">
+                        <svg class="error-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="24" cy="24" r="22" stroke="#EF4444" stroke-width="2"/>
+                            <path d="M24 14V26" stroke="#EF4444" stroke-width="3" stroke-linecap="round"/>
+                            <circle cx="24" cy="32" r="2" fill="#EF4444"/>
+                        </svg>
+                        <p class="error-text" id="errorText">Something went wrong</p>
+                        <button id="retryBtn" class="retry-btn">Try Again</button>
+                    </div>
+
+                    <div id="resultsState" class="results-state hidden">
+                        <div class="success-header">
+                            <svg class="success-icon" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="24" cy="24" r="22" stroke="#10B981" stroke-width="2"/>
+                                <path d="M16 24L21 29L32 18" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <h3 class="success-title">Ready to Download!</h3>
+                        </div>
+                        <div id="downloadLinks" class="download-links"></div>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <div class="feature">
+                        <div class="feature-icon">⚡</div>
+                        <h3 class="feature-title">Lightning Fast</h3>
+                        <p class="feature-text">Download videos in seconds</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🎨</div>
+                        <h3 class="feature-title">High Quality</h3>
+                        <p class="feature-text">Best available quality</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">🔒</div>
+                        <h3 class="feature-title">100% Secure</h3>
+                        <p class="feature-text">Your privacy matters</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="how-to">
+                <h2 class="section-title">How to Use</h2>
+                <div class="steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3 class="step-title">Copy URL</h3>
+                        <p class="step-text">Copy the Instagram video, reel, or story URL</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3 class="step-title">Paste URL</h3>
+                        <p class="step-text">Paste the URL into the input field above</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3 class="step-title">Download</h3>
+                        <p class="step-text">Click download and save your video</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-text">
+                Made with ❤️ for Instagram lovers • 
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub</a>
+            </p>
+            <p class="footer-disclaimer">
+                This tool is for personal use only. Please respect Instagram's terms of service.
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
