@@ -49,8 +49,23 @@ app.get("/igdl", async (req, res) => {
     res.json({ url: downloadedURL });
   } catch (err) {
     console.error("Error occurred:", err.message);
+
+    // Fallback Code
+    try {
+      console.log("Attempting fallback with instagram-url-direct...");
+      const instagramGetUrl = require("instagram-url-direct");
+      const results = await instagramGetUrl(url);
+      if (results.url_list.length > 0) {
+        console.log("Fallback successful!");
+        return res.json({ url: results.url_list[0] });
+      }
+    } catch (fallbackErr) {
+      console.error("Fallback failed:", fallbackErr.message);
+    }
+
     console.error("Stack trace:", err.stack);
-    res.status(500).json({ error: "Internal Server Error", details: err.message });
+    // Return the actual error message to the client for debugging
+    res.status(500).json({ error: err.message || "Internal Server Error", details: err.stack });
   }
 });
 
