@@ -133,7 +133,15 @@ function displayResults(data) {
     // Handle different response formats
     let links = [];
 
-    if (data.url) {
+    // Check for nested snapsave response format: data.url.data
+    if (data.url && typeof data.url === 'object' && data.url.data && Array.isArray(data.url.data)) {
+        // Snapsave nested response format
+        links = data.url.data.map((item, index) => ({
+            url: item.url,
+            quality: item.quality || item.type || `Video ${index + 1}`,
+            thumbnail: item.thumbnail
+        }));
+    } else if (data.url) {
         // Single URL response
         if (typeof data.url === 'string') {
             links = [{ url: data.url, quality: 'Video' }];
