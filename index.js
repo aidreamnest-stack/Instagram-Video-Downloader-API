@@ -4,8 +4,11 @@ const snapsave = require("./snapsave-downloader/src/index");
 const port = 3000;
 const path = require("path");
 
-// Serve static files from public directory
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files from the React client build directory
+app.use(express.static(path.join(__dirname, 'client/dist')));
+
+// API routes are defined below...
+
 
 // Add CORS headers for API requests
 app.use((req, res, next) => {
@@ -67,6 +70,12 @@ app.get("/igdl", async (req, res) => {
     // Return the actual error message to the client for debugging
     res.status(500).json({ error: err.message || "Internal Server Error", details: err.stack });
   }
+});
+
+// The "catch-all" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'client/dist/index.html'));
 });
 
 app.listen(port, () => {
