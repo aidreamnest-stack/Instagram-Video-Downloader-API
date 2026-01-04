@@ -132,6 +132,7 @@ function displayResults(data) {
 
     // Handle different response formats
     let links = [];
+    let thumbnail = null;
 
     // Check for nested snapsave response format: data.url.data
     if (data.url && typeof data.url === 'object' && data.url.data && Array.isArray(data.url.data)) {
@@ -141,6 +142,10 @@ function displayResults(data) {
             quality: item.quality || item.type || `Video ${index + 1}`,
             thumbnail: item.thumbnail
         }));
+        // Get thumbnail from first item
+        if (links[0] && links[0].thumbnail) {
+            thumbnail = links[0].thumbnail;
+        }
     } else if (data.url) {
         // Single URL response
         if (typeof data.url === 'string') {
@@ -155,8 +160,12 @@ function displayResults(data) {
         // Array of download options
         links = data.data.map((item, index) => ({
             url: item.url,
-            quality: item.quality || item.type || `Option ${index + 1}`
+            quality: item.quality || item.type || `Option ${index + 1}`,
+            thumbnail: item.thumbnail
         }));
+        if (links[0] && links[0].thumbnail) {
+            thumbnail = links[0].thumbnail;
+        }
     } else {
         showError('No download links found');
         return;
@@ -167,6 +176,12 @@ function displayResults(data) {
         return;
     }
 
+    // Add thumbnail preview if available
+    if (thumbnail) {
+        const thumbnailElement = createThumbnailElement(thumbnail);
+        downloadLinks.appendChild(thumbnailElement);
+    }
+
     // Create download link elements
     links.forEach((link, index) => {
         const linkElement = createDownloadLinkElement(link, index);
@@ -174,6 +189,20 @@ function displayResults(data) {
     });
 
     resultsState.classList.remove('hidden');
+}
+
+function createThumbnailElement(thumbnailUrl) {
+    const container = document.createElement('div');
+    container.className = 'thumbnail-preview';
+
+    const img = document.createElement('img');
+    img.src = thumbnailUrl;
+    img.alt = 'Video Thumbnail';
+    img.className = 'thumbnail-image';
+    img.loading = 'lazy';
+
+    container.appendChild(img);
+    return container;
 }
 
 function createDownloadLinkElement(linkData, index) {
